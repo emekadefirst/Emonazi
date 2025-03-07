@@ -1,0 +1,14 @@
+curl 'https://router.huggingface.co/fireworks-ai/v1/chat/completions' \
+-H 'Authorization: Bearer hf_xxxxxxxxxxxxxxxxxxxxxxxx' \
+-H 'Content-Type: application/json' \
+--data '{
+    "model": "accounts/fireworks/models/deepseek-r1",
+    "messages": [
+		{
+			"role": "user",
+			"content": "What is the capital of France?"
+		}
+	],
+    "max_tokens": 500,
+    "stream": false
+}'
