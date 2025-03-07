@@ -2,6 +2,7 @@ import os
 import re
 import json
 import aiohttp
+import asyncio
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -43,13 +44,14 @@ async def proposalPrompt(companyName: str, ceo: str, location: str, about: str):
     - ✅ Return **only the valid JSON object**, ensuring it’s parseable and concise.
     """
     return prompt
+
 async def GeneratePrompt(companyName: str, ceo: str, location: str, about: str):
-    uPrompt = await proposalPrompt(companyName, ceo, location , about)
+    uPrompt = await proposalPrompt(companyName, ceo, location, about)
     DATA = {
         "model": "accounts/fireworks/models/deepseek-r1", 
         "messages": [ 
             {"role": "system", "content": uPrompt},
-            {"role": "user", "content": "Please generate my job application package."}  
+            {"role": "user", "content": "Please generate my cold email proposal."}  # Fixed message
         ],
         "max_tokens": 3000  
     }
@@ -63,6 +65,7 @@ async def GeneratePrompt(companyName: str, ceo: str, location: str, about: str):
 
             try:
                 content = result["choices"][0]["message"]["content"]
+                print("Raw content from API:", content)  # Debug output
                 json_match = re.search(r'\{.*\}', content, re.DOTALL)
                 if json_match:
                     json_str = json_match.group(0)
@@ -70,6 +73,19 @@ async def GeneratePrompt(companyName: str, ceo: str, location: str, about: str):
                 else:
                     raise ValueError("No valid JSON found in response")
                 clean_response = json.dumps(job_package, indent=2, ensure_ascii=False)
-                return clean_response 
+                print(clean_response)  # Optional: Print for visibility
+                return clean_response  # Return string (or change to job_package for dict)
             except (KeyError, json.JSONDecodeError, ValueError) as e:
-                return {"Subject": "", "cover_letter": "", "resume_content": ""}
+                print(f"Error parsing response: {e}")
+                print("Raw response:", json.dumps(result, indent=2))
+                return {"Subject": "", "email_content": ""}  # Fixed fallback keys
+
+# Example execution
+if __name__ == "__main__":
+    result = asyncio.run(GeneratePrompt(
+        companyName="TechNova",
+        ceo="Jane Smith",
+        location="San Francisco, CA",
+        about="A SaaS company focused on streamlining business workflows."
+    ))
+    print("Final result:", result)
