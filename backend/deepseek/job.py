@@ -55,7 +55,7 @@ async def jobPrompt(resume_text: str, fullName: str, jobRole: str, applicationDe
     """
     return prompt
 
-async def GeneratePrompt(resume_text: str, fullName: str, jobRole: str, applicationDetail: str):
+async def GenerateApplicaton(resume_text: str, fullName: str, jobRole: str, applicationDetail: str):
     uPrompt = await jobPrompt(resume_text, fullName, jobRole, applicationDetail)
     DATA = {
         "model": "accounts/fireworks/models/deepseek-r1", 
