@@ -45,7 +45,7 @@ async def proposalPrompt(companyName: str, ceo: str, location: str, about: str):
     """
     return prompt
 
-async def GeneratePrompt(companyName: str, ceo: str, location: str, about: str):
+async def GenerateApplicaton(companyName: str, ceo: str, location: str, about: str):
     uPrompt = await proposalPrompt(companyName, ceo, location, about)
     DATA = {
         "model": "accounts/fireworks/models/deepseek-r1", 
@@ -82,7 +82,7 @@ async def GeneratePrompt(companyName: str, ceo: str, location: str, about: str):
 
 # Example execution
 if __name__ == "__main__":
-    result = asyncio.run(GeneratePrompt(
+    result = asyncio.run(GenerateApplicaton(
         companyName="TechNova",
         ceo="Jane Smith",
         location="San Francisco, CA",
