@@ -80,30 +80,13 @@ const Navbar = () => {
               >
                 About
               </a>
-              <a
-                href="#features"
-                className="text-gray-700 hover:text-indigo-600 font-medium"
-              >
-                Features
-              </a>
-              <a
-                href="#pricing"
-                className="text-gray-700 hover:text-indigo-600 font-medium"
-              >
-                Pricing
-              </a>
+
               <div className="pt-3 mt-3 border-t flex flex-col space-y-3">
                 <a
-                  href="#login"
-                  className="text-gray-700 hover:text-indigo-600"
-                >
-                  Log in
-                </a>
-                <a
-                  href="#signup"
+                  href="register"
                   className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 text-center"
                 >
-                  Sign up
+                  Register
                 </a>
               </div>
             </nav>
