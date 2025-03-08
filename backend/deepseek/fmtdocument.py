@@ -12,17 +12,14 @@ HF_API_KEY = os.getenv("HF_API_KEY")
 DEEPSEEK_URL = os.getenv("DEEPSEEK_URL")
 
 async def formatPrompt(content: str):
-    prompt = (
-        f"""
+    prompt = f"""
     Generate Python code to create a PDF resume using pdfkit (wkhtmltopdf) from this input: {content}. The input is a structured string with sections separated by newlines. The first line is the name/title; subsequent sections start with all-uppercase headers (e.g., 'TECHNICAL SKILLS'). The code must:
     - Parse the input into sections based on uppercase headers.
     - Create an HTML template with CSS (clean layout, Arial font, two-column design: skills/education/certifications on left, experience/projects/metrics on right).
     - Convert '• '-prefixed lines to <ul> lists, others to <p> or <h3> (e.g., job titles).
     - Use pdfkit to save as PDF.
-    - Output ONLY the Python code, wrapped in ```python ... ```, with an 'html = """
-        """ string. NO explanations, NO thoughts, NO extra text—JUST the code
+    - Output ONLY the Python code, wrapped in ```python ... ```, with an 'html = """ """' string. NO explanations, NO thoughts, NO extra text—JUST the code.
     """
-    )
     return prompt
 
 async def generate_doc(content: str, fullname: str):
@@ -34,7 +31,7 @@ async def generate_doc(content: str, fullname: str):
     DATA = {
         "model": "accounts/fireworks/models/deepseek-r1",
         "messages": [{"role": "system", "content": uPrompt}],
-        "max_tokens": 5000,  # Increased to fit full code
+        "max_tokens": 5000,
     }
     HEADERS = {
         "Authorization": f"Bearer {HF_API_KEY}",
@@ -55,12 +52,11 @@ async def generate_doc(content: str, fullname: str):
                 code_match = re.search(r"```python\s*(.*?)\s*```", raw_content, re.DOTALL)
                 if code_match:
                     raw_content = code_match.group(1)
-                # Extract HTML
-                html_match = re.search(r'html\s*=\s*["]{3}(.*?)["]{3}', raw_content, re.DOTALL)
+                # Extract HTML (match both ''' and """)
+                html_match = re.search(r'html\s*=\s*(?:"""|\'\'\')(.*?)(?:"""|\'\'\')', raw_content, re.DOTALL)
                 if html_match:
                     html_content = html_match.group(1)
                 else:
-                    # Fallback: Basic HTML if API fails
                     print("Falling back to basic template due to no HTML in response")
                     html_content = f"""
                     <!DOCTYPE html>
@@ -79,7 +75,10 @@ async def generate_doc(content: str, fullname: str):
                     """
 
                 pdf_file = f"{fullname.strip().replace(' ', '_')}_resume.pdf"
-                pdfkit.from_string(html_content, pdf_file)
+                # Specify wkhtmltopdf path if not in PATH (uncomment and adjust if needed)
+                # config = pdfkit.configuration(wkhtmltopdf=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe")
+                # pdfkit.from_string(html_content, pdf_file, configuration=config)
+                pdfkit.from_string(html_content, pdf_file)  # Use this if wkhtmltopdf is in PATH
                 return {"status": "success", "file": pdf_file}
 
             except (KeyError, ValueError) as e:
