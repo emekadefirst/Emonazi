@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from routes.jobroute import job
 from routes.proposalroute import proposal
 from fastapi.responses import JSONResponse
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
@@ -22,6 +23,10 @@ app.add_middleware(
 
 app.include_router(job)
 app.include_router(proposal)
+
+
+app.add_middleware(GZipMiddleware, minimum_size=1000)
+
 
 
 @app.get("/")
