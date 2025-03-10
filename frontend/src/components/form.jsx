@@ -66,7 +66,7 @@ const Signup = () => {
 
     try {
       const response = await fetch(
-        "https://disgusted-kettie-outside-e3ffd217.koyeb.app/users",
+        "https://new-raine-outside-e60ca31b.koyeb.app/users",
         {
           method: "POST",
           headers: {
