@@ -1,4 +1,5 @@
 import uvicorn
+from .milddleware import RateLimitMiddleware
 from fastapi import FastAPI
 from routes.jobroute import job
 from routes.userroute import user
@@ -15,6 +16,7 @@ app = FastAPI(
 )
 
 app.add_middleware(GZipMiddleware, minimum_size=1000)
+app.add_middleware(RateLimitMiddleware)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  

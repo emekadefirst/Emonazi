@@ -39,7 +39,7 @@ async def create_user(
         "whatsappNumber": whatsappNumber,
         "ipaddress": ipaddress,
         "created_at": datetime.utcnow(),
-        "user_type": user_types[0],  # Default to FREE-TIER
+        "user_type": user_types[0],  
     }
     try:
         response = await collection.insert_one(user_data)
