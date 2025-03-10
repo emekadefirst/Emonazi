@@ -1,5 +1,5 @@
 import uvicorn
-from .milddleware import RateLimitMiddleware
+from milddleware import RateLimitMiddleware
 from fastapi import FastAPI
 from routes.jobroute import job
 from routes.userroute import user
