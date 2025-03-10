@@ -1,6 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 from routes.jobroute import job
+from routes.userroute import user
 from routes.proposalroute import proposal
 from fastapi.responses import JSONResponse
 from fastapi.middleware.gzip import GZipMiddleware
@@ -13,6 +14,7 @@ app = FastAPI(
     contact={"email": "emekadefirst@gmail.com"}
 )
 
+app.add_middleware(GZipMiddleware, minimum_size=1000)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  
@@ -22,11 +24,8 @@ app.add_middleware(
 )
 
 app.include_router(job)
+app.include_router(user)
 app.include_router(proposal)
-
-
-app.add_middleware(GZipMiddleware, minimum_size=1000)
-
 
 
 @app.get("/")

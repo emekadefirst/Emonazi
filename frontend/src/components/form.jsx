@@ -1,28 +1,101 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    phoneNumber: '',
-    whatsapp: '',
-    password: '',
-    confirmPassword: '',
-    agreeTerms: false
+    username: "",
+    email: "",
+    whatsapp: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: value,
     });
   };
 
-  const handleSubmit = (e) => {
+  const showToast = (message, type) => {
+    // Create toast container if it doesn't exist
+    let toastContainer = document.getElementById("toast-container");
+    if (!toastContainer) {
+      toastContainer = document.createElement("div");
+      toastContainer.id = "toast-container";
+      toastContainer.className = "fixed top-4 right-4 z-50 flex flex-col gap-2";
+      document.body.appendChild(toastContainer);
+    }
+
+    // Create toast element
+    const toast = document.createElement("div");
+    toast.className = `px-4 py-2 rounded-md shadow-md text-white flex items-center ${
+      type === "success" ? "bg-green-500" : "bg-red-500"
+    } transform transition-all duration-500 opacity-0 translate-x-full`;
+
+    toast.innerHTML = `
+      <div class="mr-2">${type === "success" ? "✓" : "✕"}</div>
+      <div>${message}</div>
+    `;
+
+    toastContainer.appendChild(toast);
+
+    // Animate in
+    setTimeout(() => {
+      toast.classList.remove("opacity-0", "translate-x-full");
+    }, 10);
+
+    // Remove after 5 seconds
+    setTimeout(() => {
+      toast.classList.add("opacity-0", "translate-x-full");
+      setTimeout(() => {
+        toastContainer.removeChild(toast);
+      }, 500);
+    }, 5000);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log('Form submitted:', formData);
+    setIsLoading(true);
+
+    const requestData = {
+      username: formData.username,
+      email: formData.email,
+      whatsappNumber: formData.whatsapp,
+    };
+
+    try {
+      const response = await fetch(
+        "https://disgusted-kettie-outside-e3ffd217.koyeb.app/users",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestData),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Signup Successful:", data);
+      showToast("Signup successful! Welcome aboard.", "success");
+
+      // Optional: Reset form after successful submission
+      setFormData({
+        username: "",
+        email: "",
+        whatsapp: "",
+      });
+    } catch (error) {
+      console.error("Signup Error:", error);
+      showToast("Signup failed. Please try again.", "error");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -51,6 +124,7 @@ const Signup = () => {
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   required
+                  disabled={isLoading}
                 />
               </div>
 
@@ -69,6 +143,7 @@ const Signup = () => {
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   required
+                  disabled={isLoading}
                 />
               </div>
 
@@ -86,19 +161,24 @@ const Signup = () => {
                   value={formData.whatsapp}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  disabled={isLoading}
                 />
-                <p className="text-xs text-gray-500 mt-1">
-                  
-                </p>
               </div>
 
-              {/* Submit Button */}
               <div className="mt-6">
                 <button
                   type="submit"
-                  className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 flex items-center justify-center"
+                  disabled={isLoading}
                 >
-                  Sign Up
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Registering...
+                    </>
+                  ) : (
+                    "Register"
+                  )}
                 </button>
               </div>
             </form>
