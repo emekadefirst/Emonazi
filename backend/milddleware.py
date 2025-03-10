@@ -6,7 +6,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, meta: Request, call_next):
         user = meta.client.host
         if user:
-            limit = 10  # Change this value to your desired limit
+            limit = 10  
             if request.path_prefix not in ["/docs", "/redoc"]:
                 timestamp = int(time.time())
                 if timestamp % limit == 0:
