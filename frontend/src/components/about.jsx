@@ -7,7 +7,7 @@ const About = () => {
     "Professional resume builder",
     "Custom business proposals",
     "Industry-specific templates",
-    "SEO-optimized content",
+    "Targeted application e.g cold mail content ",
     "24/7 availability",
   ];
 
@@ -58,13 +58,6 @@ const About = () => {
                   <span className="bg-indigo-100 text-indigo-800 w-8 h-8 rounded-full flex items-center justify-center mr-4 shrink-0">
                     3
                   </span>
-                  <div>
-                    <p className="font-medium">Edit and finalize</p>
-                    <p className="text-gray-600">
-                      Review, make adjustments, and export your document in
-                      multiple formats.
-                    </p>
-                  </div>
                 </li>
               </ol>
             </div>
@@ -83,11 +76,10 @@ const About = () => {
 
             <div className="mt-8 p-4 bg-indigo-50 border border-indigo-100 rounded-lg">
               <p className="text-indigo-700 font-medium">
-                "Emonazi AI helped me create a stunning resume and cover letter
-                that landed me three interviews in a week!"
+                "Emonazi saved me time in composing targeted mails....."
               </p>
               <p className="mt-2 text-gray-600">
-                — Sarah K., Freelance Designer
+                — Victor Chibuogwu
               </p>
             </div>
           </div>
