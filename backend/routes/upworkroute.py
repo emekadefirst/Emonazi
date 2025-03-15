@@ -12,7 +12,7 @@ class Proposal(BaseModel):
 
 
 @upwork.post("/proposal")
-async def create(data: Proposal =  Depends()):
+async def create(data: Proposal):
     try:
         response = await GenerateApplication(data.description)
         return JSONResponse(
@@ -21,5 +21,7 @@ async def create(data: Proposal =  Depends()):
         )
     except Exception as e:
         return JSONResponse(
-            content={"error": str(e)}, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+            content={"error": str(e)},
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
+

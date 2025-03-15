@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/index"; 
 import SignupForm from "./pages/formpage"; 
 import DashBoard from "./pages/dashboard";
+import ChatRoom from "./pages/chat";
 import "./index.css";
 
 createRoot(document.getElementById("root")).render(
@@ -13,6 +14,7 @@ createRoot(document.getElementById("root")).render(
         <Route path="/" element={<Home />} />
         <Route path="register" element={<SignupForm />} />
         <Route path="dashboard" element={<DashBoard />} />
+        <Route path="chat" element={<ChatRoom />} />
       </Routes>
     </Router>
   </StrictMode>
