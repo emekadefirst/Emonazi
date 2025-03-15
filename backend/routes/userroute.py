@@ -8,7 +8,7 @@ class User(BaseModel):
     email: EmailStr
     whatsappNumber: int
 
-user = APIRouter(tags=["User path"])
+user = APIRouter()
 
 
 @user.post("/users")

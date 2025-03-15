@@ -4,9 +4,7 @@ from fastapi import status
 from fastapi.responses import JSONResponse
 from deepseek.job import GenerateApplicaton
 
-job = APIRouter(
-    tags=["Job path"] 
-)
+job = APIRouter()
 
 class Hunter(BaseModel):
     fullname: str

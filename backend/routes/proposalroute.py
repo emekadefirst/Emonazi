@@ -4,9 +4,7 @@ from fastapi import status
 from fastapi.responses import JSONResponse
 from deepseek.proposal import GenerateApplicaton
 
-proposal = APIRouter(
-    tags=["proposal path"] 
-)
+proposal = APIRouter()
 
 class Proposal(BaseModel):
     companyName: str

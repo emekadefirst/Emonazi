@@ -3,6 +3,7 @@ from milddleware import RateLimitMiddleware
 from fastapi import FastAPI
 from routes.jobroute import job
 from routes.userroute import user
+from routes.upworkroute import upwork
 from routes.proposalroute import proposal
 from fastapi.responses import JSONResponse
 from fastapi.middleware.gzip import GZipMiddleware
@@ -25,9 +26,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(job)
+app.include_router(job, tags=["job"], prefix="/job")
 app.include_router(user)
-app.include_router(proposal)
+app.include_router(proposal, tags=["proposal"], prefix="/proposal")
+app.include_router(upwork, tags=["Upwork"], prefix="/upwork")
 
 
 @app.get("/")
@@ -35,4 +37,4 @@ async def main():
     return JSONResponse("You now have access to our platform")
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="localhost", port=8001)
